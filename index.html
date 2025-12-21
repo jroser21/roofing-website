@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional roofing services for residential and commercial properties. Quality craftsmanship, reliable service, and competitive pricing.">
+  <title>Premier Roofing Co. | Professional Roofing Services</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzCJaCaLJkVbHf5X8aqIB1WdHBNDoGgvc&libraries=places&callback=initAutocomplete" async defer></script>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <nav class="container">
+      <a href="index.html" class="logo">Premier<span>Roofing</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+      </ul>
+      <div class="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Quality Roofing Solutions You Can Trust</h1>
+        <p>Protecting your home with expert craftsmanship and premium materials. From repairs to complete installations, we deliver excellence on every project.</p>
+        <div class="hero-buttons">
+          <a href="#instant-estimate" class="btn btn-primary">Get Instant Estimate</a>
+          <a href="services.html" class="btn btn-secondary">Our Services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instant Estimate Section -->
+  <section class="instant-estimate" id="instant-estimate">
+    <div class="container">
+      <div class="section-header">
+        <h2>Instant Roof Estimate</h2>
+        <p>Enter your address to get a satellite-based roof measurement and instant estimate</p>
+      </div>
+
+      <div class="estimate-tool">
+        <div class="estimate-input-section">
+          <div class="address-input-wrapper">
+            <label for="addressInput">Enter Your Property Address</label>
+            <div class="address-input-group">
+              <input type="text" id="addressInput" placeholder="Start typing your address..." autocomplete="off">
+              <button type="button" id="analyzeBtn" class="btn btn-primary">
+                <span class="btn-text">Analyze Roof</span>
+                <span class="btn-loading" style="display: none;">Analyzing...</span>
+              </button>
+            </div>
+            <p class="input-hint">We use satellite imagery to measure your roof accurately</p>
+          </div>
+        </div>
+
+        <div class="estimate-results" id="estimateResults" style="display: none;">
+          <!-- Report Header -->
+          <div class="report-header">
+            <div class="report-title">
+              <h3>Roof Measurement Report</h3>
+              <p class="report-date" id="reportDate">Generated: --</p>
+            </div>
+            <div class="report-address">
+              <span class="label">Property Address:</span>
+              <span id="reportAddress">--</span>
+            </div>
+          </div>
+
+          <div class="report-grid">
+            <!-- Left Column: Map & Property Image -->
+            <div class="report-left">
+              <div class="map-container">
+                <h4>Satellite View</h4>
+                <div id="satelliteMap" class="satellite-map">
+                  <div class="map-placeholder">
+                    <span>&#128506;</span>
+                    <p>Satellite view will appear here</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Roof Complexity -->
+              <div class="report-card">
+                <h4>Roof Complexity Rating</h4>
+                <div class="complexity-meter">
+                  <div class="complexity-bar" id="complexityBar"></div>
+                </div>
+                <div class="complexity-labels">
+                  <span>Simple</span>
+                  <span>Moderate</span>
+                  <span>Complex</span>
+                  <span>Very Complex</span>
+                </div>
+                <p class="complexity-description" id="complexityDescription">--</p>
+              </div>
+
+              <!-- Suggested Waste Factor -->
+              <div class="report-card">
+                <h4>Suggested Waste Factor</h4>
+                <div class="waste-factor">
+                  <span class="waste-value" id="wasteFactor">--%</span>
+                  <p>Additional material recommended for cuts, waste, and starter courses</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Measurements -->
+            <div class="report-right">
+              <!-- Roof Summary -->
+              <div class="report-card summary-card">
+                <h4>Roof Summary</h4>
+                <div class="summary-grid">
+                  <div class="summary-item primary">
+                    <span class="summary-value" id="roofArea">--</span>
+                    <span class="summary-label">Total Roof Area (sq ft)</span>
+                  </div>
+                  <div class="summary-item primary">
+                    <span class="summary-value" id="roofSquares">--</span>
+                    <span class="summary-label">Roofing Squares</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-value" id="roofSegments">--</span>
+                    <span class="summary-label">Roof Facets</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-value" id="roofPitch">--</span>
+                    <span class="summary-label">Predominant Pitch</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pitch Breakdown -->
+              <div class="report-card">
+                <h4>Pitch Breakdown by Facet</h4>
+                <div class="pitch-table" id="pitchTable">
+                  <!-- Populated by JavaScript -->
+                </div>
+              </div>
+
+              <!-- Linear Measurements -->
+              <div class="report-card">
+                <h4>Estimated Linear Measurements</h4>
+                <div class="linear-grid">
+                  <div class="linear-item">
+                    <span class="linear-label">Ridges</span>
+                    <span class="linear-value" id="ridgeLength">-- ft</span>
+                  </div>
+                  <div class="linear-item">
+                    <span class="linear-label">Hips</span>
+                    <span class="linear-value" id="hipLength">-- ft</span>
+                  </div>
+                  <div class="linear-item">
+                    <span class="linear-label">Valleys</span>
+                    <span class="linear-value" id="valleyLength">-- ft</span>
+                  </div>
+                  <div class="linear-item">
+                    <span class="linear-label">Eaves</span>
+                    <span class="linear-value" id="eaveLength">-- ft</span>
+                  </div>
+                  <div class="linear-item">
+                    <span class="linear-label">Rakes</span>
+                    <span class="linear-value" id="rakeLength">-- ft</span>
+                  </div>
+                  <div class="linear-item">
+                    <span class="linear-label">Flashing</span>
+                    <span class="linear-value" id="flashingLength">-- ft</span>
+                  </div>
+                </div>
+                <p class="linear-note">*Linear measurements are estimated based on roof geometry</p>
+              </div>
+
+              <!-- Material Estimate -->
+              <div class="report-card">
+                <h4>Material Estimates</h4>
+                <div class="material-grid">
+                  <div class="material-item">
+                    <span class="material-label">Shingle Bundles (3-tab)</span>
+                    <span class="material-value" id="shingleBundles3">--</span>
+                  </div>
+                  <div class="material-item">
+                    <span class="material-label">Shingle Bundles (Architectural)</span>
+                    <span class="material-value" id="shingleBundlesArch">--</span>
+                  </div>
+                  <div class="material-item">
+                    <span class="material-label">Underlayment Rolls</span>
+                    <span class="material-value" id="underlaymentRolls">--</span>
+                  </div>
+                  <div class="material-item">
+                    <span class="material-label">Drip Edge (10ft pieces)</span>
+                    <span class="material-value" id="dripEdge">--</span>
+                  </div>
+                  <div class="material-item">
+                    <span class="material-label">Ridge Cap Bundles</span>
+                    <span class="material-value" id="ridgeCap">--</span>
+                  </div>
+                  <div class="material-item">
+                    <span class="material-label">Roofing Nails (lbs)</span>
+                    <span class="material-value" id="nailsLbs">--</span>
+                  </div>
+                </div>
+                <p class="material-note">*Includes suggested waste factor. Verify with supplier.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Estimate -->
+          <div class="price-estimate-full">
+            <div class="price-header">
+              <h4>Cost Estimate</h4>
+            </div>
+            <div class="price-breakdown">
+              <div class="price-item">
+                <span class="price-label">Budget (3-Tab Shingles)</span>
+                <span class="price-value" id="priceLow">$--</span>
+              </div>
+              <div class="price-item featured">
+                <span class="price-label">Standard (Architectural Shingles)</span>
+                <span class="price-value" id="priceMid">$--</span>
+              </div>
+              <div class="price-item">
+                <span class="price-label">Premium (Designer Shingles)</span>
+                <span class="price-value" id="priceHigh">$--</span>
+              </div>
+            </div>
+            <p class="price-note">*Estimates include labor and materials. Final price depends on tear-off requirements, decking condition, accessibility, and local factors.</p>
+          </div>
+
+          <!-- Report Actions -->
+          <div class="report-actions">
+            <button type="button" class="btn btn-secondary" onclick="printReport()">Print Report</button>
+            <a href="contact.html" class="btn btn-primary">Request Professional Quote</a>
+            <button type="button" class="btn btn-secondary" onclick="resetEstimate()">New Estimate</button>
+          </div>
+
+          <!-- Disclaimer -->
+          <div class="report-disclaimer">
+            <p><strong>Disclaimer:</strong> This report is generated using satellite imagery and automated analysis. Measurements are estimates and may vary from actual conditions. A professional on-site inspection is recommended before beginning any roofing project. Premier Roofing Co. is not responsible for discrepancies between estimated and actual measurements.</p>
+          </div>
+        </div>
+
+        <div class="estimate-error" id="estimateError" style="display: none;">
+          <div class="error-content">
+            <span class="error-icon">&#9888;</span>
+            <h4>Unable to Analyze This Property</h4>
+            <p id="errorMessage">We couldn't retrieve satellite data for this address. Please try again or contact us for a manual estimate.</p>
+            <button type="button" class="btn btn-secondary" onclick="resetEstimate()">Try Again</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="estimate-info">
+        <div class="info-item">
+          <span class="info-icon">&#128640;</span>
+          <h4>Instant Results</h4>
+          <p>Get your roof size in seconds using advanced satellite technology</p>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">&#127919;</span>
+          <h4>Accurate Measurements</h4>
+          <p>Our system calculates roof area including pitch and complexity</p>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">&#128274;</span>
+          <h4>No Obligation</h4>
+          <p>Free estimate with no commitment required</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Preview -->
+  <section class="services">
+    <div class="container">
+      <div class="section-header">
+        <h2>Our Services</h2>
+        <p>Comprehensive roofing solutions tailored to meet your specific needs</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">&#9751;</div>
+          <h3>Roof Installation</h3>
+          <p>Complete roof installation services using premium materials and expert techniques for lasting protection.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#9874;</div>
+          <h3>Roof Repair</h3>
+          <p>Fast, reliable repairs for leaks, storm damage, and wear. We restore your roof to optimal condition.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#8635;</div>
+          <h3>Roof Replacement</h3>
+          <p>When repairs aren't enough, we provide complete roof replacement with minimal disruption.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#9730;</div>
+          <h3>Emergency Services</h3>
+          <p>24/7 emergency response for urgent roofing issues. We're here when you need us most.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why Choose Us</h2>
+        <p>Trusted by homeowners for quality, reliability, and exceptional service</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">&#10003;</div>
+          <div>
+            <h4>Licensed & Insured</h4>
+            <p>Fully licensed and insured for your complete peace of mind.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#9733;</div>
+          <div>
+            <h4>20+ Years Experience</h4>
+            <p>Two decades of expertise in residential and commercial roofing.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#128176;</div>
+          <div>
+            <h4>Competitive Pricing</h4>
+            <p>Fair, transparent pricing with no hidden fees or surprises.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#128737;</div>
+          <div>
+            <h4>Warranty Protection</h4>
+            <p>Comprehensive warranties on materials and workmanship.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#9201;</div>
+          <div>
+            <h4>On-Time Completion</h4>
+            <p>We respect your time and complete projects on schedule.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#127968;</div>
+          <div>
+            <h4>Local Experts</h4>
+            <p>We understand local weather conditions and building codes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Preview -->
+  <section class="about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-image">&#127968;</div>
+        <div class="about-text">
+          <h2>Your Trusted Roofing Partner</h2>
+          <p>Since 2003, Premier Roofing Co. has been the trusted choice for homeowners and businesses seeking quality roofing solutions. Our commitment to excellence, combined with our use of premium materials and skilled craftsmanship, ensures every project exceeds expectations.</p>
+          <p>We take pride in building lasting relationships with our clients through transparent communication, fair pricing, and exceptional results.</p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <h3>500+</h3>
+              <p>Projects Completed</p>
+            </div>
+            <div class="stat-item">
+              <h3>20+</h3>
+              <p>Years Experience</p>
+            </div>
+            <div class="stat-item">
+              <h3>100%</h3>
+              <p>Satisfaction Rate</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <h2>What Our Clients Say</h2>
+        <p>Don't just take our word for it - hear from our satisfied customers</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">Premier Roofing did an outstanding job on our roof replacement. Professional, efficient, and the quality of work exceeded our expectations. Highly recommend!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">JM</div>
+            <div class="author-info">
+              <h4>John Martinez</h4>
+              <p>Homeowner</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">After a severe storm damaged our roof, Premier Roofing responded immediately. They handled everything, including the insurance claim. Excellent service!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SK</div>
+            <div class="author-info">
+              <h4>Sarah Kim</h4>
+              <p>Homeowner</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">We've used Premier Roofing for multiple commercial properties. Their attention to detail and commitment to quality makes them our go-to roofing contractor.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">RL</div>
+            <div class="author-info">
+              <h4>Robert Lee</h4>
+              <p>Property Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Get Started?</h2>
+      <p>Contact us today for a free, no-obligation estimate. Our team is ready to help protect your home.</p>
+      <a href="contact.html" class="btn btn-primary">Get Your Free Estimate</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">Premier<span>Roofing</span></a>
+          <p>Professional roofing services for residential and commercial properties. Quality craftsmanship you can trust.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Roof Installation</a></li>
+            <li><a href="services.html">Roof Repair</a></li>
+            <li><a href="services.html">Roof Replacement</a></li>
+            <li><a href="services.html">Emergency Services</a></li>
+            <li><a href="services.html">Inspections</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contact Info</h4>
+          <ul>
+            <li>(555) 123-4567</li>
+            <li>info@premierroofing.com</li>
+            <li>123 Main Street</li>
+            <li>Your City, ST 12345</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Premier Roofing Co. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

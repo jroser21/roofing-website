@@ -1,0 +1,7 @@
+# Large data files
+data/parcels/Parcels.dbf
+data/parcels/Parcels.shp
+data/stl_city_parcels_csv.zip
+data/stl_county_parcels.zip
+*.dbf
+*.shp
